@@ -2,15 +2,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct Node 
+typedef struct SLL_Node 
 {
 	int data;
-	Node* Next;
-}Node;
+	SLL_Node* Next;
+}SLL_Node;
 
 typedef struct SLL 
 {
-	Node* Head;
+	SLL_Node* Head;
 }SLL;
 
 SLL* SLL_Init()
@@ -25,7 +25,7 @@ SLL* SLL_Init()
 
 void SLL_AddData(SLL* list, int i)
 {
-	Node* new_node = (Node*)malloc(sizeof(Node));
+	SLL_Node* new_node = (SLL_Node*)malloc(sizeof(SLL_Node));
 	if (new_node == NULL) return;
 
 	new_node->data = i;
@@ -37,7 +37,7 @@ void SLL_AddData(SLL* list, int i)
 	}
 	else
 	{
-		Node* current_node = list->Head;
+		SLL_Node* current_node = list->Head;
 		while (current_node->Next != NULL)
 		{
 			current_node = current_node->Next;
@@ -54,7 +54,7 @@ void SLL_ViewAllData(SLL* list)
 		return;
 	}
 
-	Node* current_node = list->Head;
+	SLL_Node* current_node = list->Head;
 
 	while (current_node != NULL)
 	{

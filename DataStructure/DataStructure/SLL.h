@@ -13,7 +13,7 @@ typedef struct SLL
 	Node* Head;
 }SLL;
 
-SLL* SLL_init()
+SLL* SLL_Init()
 {
 	SLL* list = (SLL*)malloc(sizeof(SLL));
 	if (list == NULL) return NULL;
@@ -44,5 +44,35 @@ void SLL_AddData(SLL* list, int i)
 		}
 		current_node->Next = new_node;
 	}
+	return;
+}
+
+void SLL_ViewAllData(SLL* list)
+{
+	if (list->Head == NULL)
+	{
+		return;
+	}
+
+	Node* current_node = list->Head;
+
+	while (current_node != NULL)
+	{
+		printf("%d\n", current_node->data);
+		current_node = current_node->Next;
+	}
+	return;
+}
+
+void SLL_Sample()
+{
+	SLL* list = SLL_Init();
+	
+	for (int i = 0; i < 100; i++)
+	{
+		SLL_AddData(list, i);
+	}
+	SLL_ViewAllData(list);
+
 	return;
 }

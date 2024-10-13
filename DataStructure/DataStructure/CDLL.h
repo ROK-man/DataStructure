@@ -29,7 +29,7 @@ CDLL* CDLL_Init()
 int CDLL_IsListEmpty(CDLL* list)
 {
 	if (list->Size == 0)	return 1;
-	return -1;
+	return 0;
 }
 
 
@@ -221,7 +221,7 @@ int CDLL_Destroy(CDLL* list)
 {
 	if (list == NULL)
 	{
-		return -1;
+		return 0;
 	}
 
 	while (CDLL_GetSize(list) > 0)
@@ -235,7 +235,77 @@ int CDLL_Destroy(CDLL* list)
 		free(list);
 		return 1;
 	}
-	return -1;
+	return 0;
+}
+
+// 데이터 2개 교체
+int CDLL_SwapData(CDLL* list, int index0, int index1)
+{
+	if (list->Head == NULL) return 0;
+	if (index0 > CDLL_GetSize(list)-1 || index1 > CDLL_GetSize(list)-1) return 0;
+
+	CDLL_Node* node0 = NULL;
+	CDLL_Node* node1 = NULL;
+
+	int index = 0;
+	int done = 0;
+	CDLL_Node* current_node = list->Head;
+	do
+	{
+		if (index == index0)
+		{
+			node0 = current_node;
+			done++;
+		}
+		if (index == index1)
+		{
+			node1 = current_node;
+			done++;
+		}
+		if (done == 2)
+		{
+			break;
+		}
+
+		index++;
+		current_node = current_node->Next;
+
+	} while (current_node != list->Head);
+
+	if (done != 2) return 0;
+	if (node0 == NULL || node1 == NULL) return 0;
+
+	int temp = node0->Data;
+	node0->Data = node1->Data;
+	node1->Data = temp;
+
+	return 1;
+}
+
+// 특정 인덱스에 있는 값 교체
+int CDLL_ChangeData(CDLL* list, int data, int index)
+{
+	if (CDLL_IsListEmpty(list)) return 0;
+
+	if (index - 1 > CDLL_GetSize(list)) return 0;
+
+	CDLL_Node* current_node = list->Head;
+	int i = 0;
+
+	do
+	{
+		if (i == index)
+		{
+			current_node->Data = data;
+			return 1;
+		}
+
+		i++;
+		current_node = current_node->Next;
+
+	} while (current_node != list->Head);
+
+	return 0;
 }
 
 // 샘플 코드
@@ -277,6 +347,24 @@ void CDLL_Sample()
 
 	printf("리스트 삭제\n");
 	printf("%d\n", CDLL_Destroy(list));
+
+	printf("리스트 다시 생성\n");
+	CDLL* list2 = CDLL_Init();
+
+	for (int i = 0; i < 10; i++)
+	{
+		CDLL_AddData(list2, i);
+	}
+	CDLL_ViewAllData(list2);
+
+	printf("1과 3, 5와 7 스왑\n");
+	CDLL_SwapData(list2, 1, 3);
+	CDLL_SwapData(list2, 5, 7);
+	CDLL_ViewAllData(list2);
+
+	printf("4번 인덱스에 있는 값 121로 변경\n");
+	CDLL_ChangeData(list2, 121, 4);
+	CDLL_ViewAllData(list2);
 
 	return;
 }

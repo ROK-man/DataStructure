@@ -1,5 +1,2 @@
 ﻿  main.cpp
-C:\Users\Code\source\repos\DataStructure\DataStructure\DataStructure\minHeap.h(99,12): warning C4101: 'temp' :참조되지 않은 지역 변수입니다.
-  (소스 파일 'main.cpp'을(를) 컴파일하는 중)
-  
   DataStructure.vcxproj -> C:\Users\Code\Source\Repos\DataStructure\DataStructure\x64\Debug\DataStructure.exe

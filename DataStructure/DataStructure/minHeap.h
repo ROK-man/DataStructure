@@ -27,12 +27,23 @@ minHeap* minHeap_Init()
 	
 	heap->Heap = (heapNode**)malloc(sizeof(heapNode*) * 128);
 
-	if (heap->Heap == NULL) return NULL;
+	if (heap->Heap == NULL)
+	{
+		free(heap);
+		return NULL;
+	}
 
 	heap->Capacity = 128;
 	heap->UsedSize = 0;
 
 	return heap;
+}
+
+void minHeap_SwitchNode(minHeap* heap, int idx1, int idx2)
+{
+	heapNode* temp = heap->Heap[idx1];
+	heap->Heap[idx1] = heap->Heap[idx2];
+	heap->Heap[idx2] = temp;
 }
 
 void minHeap_AddData(minHeap* heap, element data)
@@ -62,9 +73,7 @@ void minHeap_AddData(minHeap* heap, element data)
 
 	while (heap->Heap[parent_index]->Data > heap->Heap[current_index]->Data && parent_index >= 0)
 	{
-		heapNode* temp = heap->Heap[parent_index];
-		heap->Heap[parent_index] = heap->Heap[current_index];
-		heap->Heap[current_index] = temp;
+		minHeap_SwitchNode(heap, parent_index, current_index);
 
 		current_index = parent_index;
 		parent_index = (parent_index-1)/2;
@@ -74,12 +83,6 @@ void minHeap_AddData(minHeap* heap, element data)
 	return;
 }
 
-void minHeap_SwitchNode(minHeap* heap, int idx1, int idx2)
-{
-	heapNode* temp = heap->Heap[idx1];
-	heap->Heap[idx1] = heap->Heap[idx2];
-	heap->Heap[idx2] = temp;
-}
 
 element minHeap_Pop(minHeap* heap)
 {
@@ -96,7 +99,6 @@ element minHeap_Pop(minHeap* heap)
 	child1 = current * 2 + 1;
 	child2 = current * 2 + 2;
 	int target_child;
-	heapNode* temp;
 	while (child1 <= heap->UsedSize - 1)
 	{
 		if (child2 > heap->UsedSize - 1)
@@ -149,7 +151,7 @@ void minHeap_View(minHeap* heap)
 void minHeap_Destroy(minHeap* heap)
 {
 	if (heap == NULL || heap->Heap == NULL) return;
-	while (heap->UsedSize == 0)
+	while (heap->UsedSize > 0)
 	{
 		minHeap_Pop(heap);
 	}
@@ -158,6 +160,23 @@ void minHeap_Destroy(minHeap* heap)
 	return;
 }
 
+// 힙 최대크기 줄이기
+void shrinkHeap(minHeap* heap)
+{
+	if (heap->UsedSize < heap->Capacity / 4)
+	{
+		heap->Capacity /= 2;
+		heap->Heap = (heapNode**)realloc(heap->Heap, sizeof(heapNode*) * heap->Capacity);
+	}
+}
+
+
+// Pop 없이 숫자만 확인
+element minHeap_Peek(minHeap* heap)
+{
+	if (heap == NULL || heap->Heap == NULL || heap->UsedSize == 0) return -1;
+	return heap->Heap[0]->Data;
+}
 
 void minHeap_Sample()
 {

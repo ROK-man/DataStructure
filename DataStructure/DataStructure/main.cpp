@@ -6,8 +6,9 @@ int main()
 {
 	printf("Hello Git\n");
 
-	//SLL_Sample()
-	DLL_Sample();
+	//SLL_Sample();
+	//DLL_Sample();
+	CDLL_Sample();
 
 	return 0;
 }

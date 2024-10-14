@@ -87,8 +87,8 @@ element minHeap_Pop(minHeap* heap)
 
 	element data = heap->Heap[0]->Data;
 
+	free(heap->Heap[0]);
 	heap->Heap[0] = heap->Heap[heap->UsedSize - 1];
-	free(heap->Heap[heap->UsedSize - 1]);
 	heap->UsedSize--;
 
 	int current, child1, child2;
@@ -139,25 +139,48 @@ element minHeap_Pop(minHeap* heap)
 void minHeap_View(minHeap* heap)
 {
 	if (heap == NULL || heap->Heap == NULL || heap->UsedSize == 0) return;
-	for (int i = 1; i < heap->UsedSize; i++)
+	for (int i = 0; i < heap->UsedSize; i++)
 	{
 		printf("%d ", heap->Heap[i]->Data);
 	}
 	printf("\n");
 }
 
+void minHeap_Destroy(minHeap* heap)
+{
+	if (heap == NULL || heap->Heap == NULL) return;
+	while (heap->UsedSize == 0)
+	{
+		minHeap_Pop(heap);
+	}
+	free(heap->Heap);
+	free(heap);
+	return;
+}
+
 
 void minHeap_Sample()
 {
+	printf("최소힙 생성 및 데이터추가\n");
 	minHeap* heap = minHeap_Init();
-	for (int i = 10; i >8; i--)
+	for (int i = 60; i >0; i-=3)
 	{
-		printf("%d\n", i);
 		minHeap_AddData(heap, i);
-		minHeap_View(heap);
 	}
-	//for (int i = 0; i < 10; i++)
-	//{
-	//printf("%d %d ",  heap->UsedSize, minHeap_Pop(heap));
-	//}
+	minHeap_View(heap);
+	printf("데이터 10개 뽑은 뒤 그 10개 데이터 출력\n");
+	for (int i = 0; i < 10; i++)
+	{
+		printf("%d ", minHeap_Pop(heap));
+	}
+	printf("\n");
+	minHeap_Destroy(heap);
+
+	printf("힙 삭제 후 새로 초기화\n");
+	heap = minHeap_Init();
+	for (int i = 100; i > 0; i -= 6)
+	{
+		minHeap_AddData(heap, i);
+	}
+	minHeap_View(heap);
 }

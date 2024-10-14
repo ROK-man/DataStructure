@@ -227,7 +227,6 @@ int CDLL_Destroy(CDLL* list)
 	while (CDLL_GetSize(list) > 0)
 	{
 		CDLL_RemoveDataAt(list, 0);
-		// CDLL_ViewAllData(list);
 	}
 
 	if (list->Head == NULL)
@@ -307,6 +306,12 @@ int CDLL_ChangeData(CDLL* list, int data, int index)
 
 	return 0;
 }
+
+// 리스트 2개 합치기
+
+// 리스트 헤드 바꾸기
+
+// 리스트 방향 바꾸기
 
 // 샘플 코드
 void CDLL_Sample()

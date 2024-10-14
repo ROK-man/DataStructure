@@ -24,6 +24,9 @@
     <ClInclude Include="DLL.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="minHeap.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

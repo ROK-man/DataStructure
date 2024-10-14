@@ -2,13 +2,15 @@
 #include "SLL.h"
 #include "DLL.h"
 #include "CDLL.h"
+#include "minHeap.h"
 int main()
 {
 	printf("Hello Git\n");
 
 	//SLL_Sample();
 	//DLL_Sample();
-	CDLL_Sample();
+	//CDLL_Sample();
+	minHeap_Sample();
 
 	return 0;
 }

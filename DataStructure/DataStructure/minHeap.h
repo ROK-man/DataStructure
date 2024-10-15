@@ -56,8 +56,12 @@ void minHeap_AddData(minHeap* heap, element data)
 
 	if (heap->UsedSize >= heap->Capacity)
 	{
-		heap->Heap = (heapNode**)realloc(heap->Heap, sizeof(heapNode*) * heap->Capacity * 2);
-		if (heap->Heap == NULL)
+		heapNode** temp = (heapNode**)realloc(heap->Heap, sizeof(heapNode*) * heap->Capacity * 2);
+		if (temp != NULL)
+		{
+			heap->Heap = temp;
+		}
+		else
 		{
 			free(newNode);
 			return;
@@ -91,8 +95,13 @@ element minHeap_Pop(minHeap* heap)
 	element data = heap->Heap[0]->Data;
 
 	free(heap->Heap[0]);
-	heap->Heap[0] = heap->Heap[heap->UsedSize - 1];
 	heap->UsedSize--;
+	if (heap->UsedSize == 0)
+	{
+		return data;
+	}
+	heap->Heap[0] = NULL;
+	heap->Heap[0] = heap->Heap[heap->UsedSize - 1];
 
 	int current, child1, child2;
 	current = 0;
@@ -166,7 +175,12 @@ void shrinkHeap(minHeap* heap)
 	if (heap->UsedSize < heap->Capacity / 4)
 	{
 		heap->Capacity /= 2;
-		heap->Heap = (heapNode**)realloc(heap->Heap, sizeof(heapNode*) * heap->Capacity);
+		heapNode** temp = (heapNode**)realloc(heap->Heap, sizeof(heapNode*) * heap->Capacity);
+		if (temp != NULL) 
+		{
+			heap->Heap = temp;
+			return;
+		}
 	}
 }
 

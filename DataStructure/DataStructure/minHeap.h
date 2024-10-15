@@ -66,6 +66,7 @@ void minHeap_AddData(minHeap* heap, element data)
 			free(newNode);
 			return;
 		}
+
 		heap->Capacity *= 2;
 	}
 
@@ -95,13 +96,14 @@ element minHeap_Pop(minHeap* heap)
 	element data = heap->Heap[0]->Data;
 
 	free(heap->Heap[0]);
-	heap->UsedSize--;
+	heap->Heap[0] = NULL;
 	if (heap->UsedSize == 0)
 	{
 		return data;
 	}
-	heap->Heap[0] = NULL;
 	heap->Heap[0] = heap->Heap[heap->UsedSize - 1];
+	heap->UsedSize--;
+	if (heap->Heap[0] == NULL) return data;
 
 	int current, child1, child2;
 	current = 0;

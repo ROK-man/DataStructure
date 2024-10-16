@@ -1,1 +1,11 @@
+# 빌드 파일 무시
+*.obj
+*.exe
+*.pdb
+*.log
+
+# Visual Studio 관련 파일
+*.user
+*.vcxproj.*
+.vscode/
 .vs/

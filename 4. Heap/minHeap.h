@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../DataBox.h"
+#define _CRT_SECURE_NO_WARNINGS
 
 typedef struct heapNode
 {
@@ -36,7 +37,15 @@ minHeap* minHeap_Init()
 	heap->Capacity = 128;
 	heap->UsedSize = 0;
 
+	heap->Heap[0] = NULL;
+
 	return heap;
+}
+
+int minHeap_Empty(minHeap* heap)
+{
+	if (heap->Heap[0] == NULL) return 1;
+	return 0;
 }
 
 void minHeap_SwitchNode(minHeap* heap, int idx1, int idx2)
@@ -195,7 +204,12 @@ DataBox* minHeap_Peek(minHeap* heap)
 	return heap->Heap[0]->Data;
 }
 
-
+/*
+typedef struct {
+	int i;
+}DataBox;일 때 샘플코드
+*/
+/*
 void minHeap_Sample()
 {
 	printf("최소힙 생성 및 데이터추가\n");
@@ -225,4 +239,125 @@ void minHeap_Sample()
 		minHeap_AddData(heap, data, data->i);
 	}
 	minHeap_View(heap);
+}
+*/
+
+
+// 주차장 문제
+
+
+/*
+typedef struct {
+	int carNo;
+	int parkingNo;
+}DataBox;
+*/
+void parkingLot()
+{
+	int size;
+	int t;
+	scanf("%d %d", &size, &t);
+	const int min_size = size;
+	DataBox** arr = (DataBox**)malloc(sizeof(DataBox*) * size);
+
+	int used = 0;
+	int many = 0;
+	minHeap* heap = minHeap_Init();
+	int k;
+	DataBox* box;
+	for (int i = 0; i < t; i++)
+	{
+		scanf("%d", &k);
+		if (k > 0)
+		{
+			box = MakeData(k, used+1);
+			if (size == many)
+			{
+				arr = (DataBox**)realloc(arr, (sizeof(DataBox*) * size * 2));
+				size *= 2;
+			}
+			if (many == used)
+			{
+
+				arr[used] = box;
+				used++;
+				many++;
+			}
+			else
+			{
+
+				DataBox* temp = minHeap_Pop(heap);
+				int index = temp->parkingNo - 1;
+				box->parkingNo = temp->parkingNo;
+				arr[index] = box;
+				free(temp);
+				many++;
+			}
+		}
+		else if (k < 0)
+		{
+			k = -k;
+			for (int i = 0; i < used; i++)
+			{
+
+				if (arr[i] == NULL) continue;
+				if (arr[i]->carNo == k)
+				{
+					minHeap_AddData(heap, arr[i], arr[i]->parkingNo);
+					arr[i] = NULL;
+					many--;
+					if (size > min_size && size / many >= 3)
+					{
+						int temp = 0;
+						for (int j = 0; j < used; j++)
+						{
+							for (int i = 0; i < used; i++)
+							{
+								if (arr[i] != NULL)
+								{
+									printf("%d %d\n", arr[i]->parkingNo, arr[i]->carNo);
+								}
+							}
+							printf("\n");
+							if (arr[j] != NULL)
+							{
+								arr[temp] = arr[j];
+								arr[temp]->parkingNo = temp+1;
+								arr[j] = NULL;
+								temp++;
+							}
+							else
+							{
+								continue;
+							}
+						}
+						minHeap_Destroy(heap);
+						heap = minHeap_Init();
+						used = many;
+						size = size / 2;
+						arr = (DataBox**)realloc(arr, sizeof(DataBox*) * size);
+					}
+					break;
+				}
+			}
+
+		}
+		for (int i = 0; i < used; i++)
+		{
+			if (arr[i] != NULL)
+			{
+				printf("%d %d\n", arr[i]->parkingNo, arr[i]->carNo);
+			}
+		}
+		printf("\n");
+	}
+
+	for (int i = 0; i < used; i++)
+	{
+		if (arr[i] != NULL)
+		{
+			printf("%d %d\n", arr[i]->parkingNo, arr[i]->carNo);
+		}
+	}
+
 }

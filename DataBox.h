@@ -1,12 +1,14 @@
 // Example header file 
 typedef struct {
-	int i;
+	int carNo;
+	int parkingNo;
 }DataBox;
 
-DataBox* MakeData(int data)
+DataBox* MakeData(int car, int parking)
 {
 	DataBox* newData = (DataBox*)malloc(sizeof(DataBox));
-	newData->i = data;
+	newData->carNo = car;
+	newData->parkingNo = parking;
 
 	return newData;
 }

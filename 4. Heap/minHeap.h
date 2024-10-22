@@ -268,6 +268,7 @@ void parkingLot()
 	for (int i = 0; i < t; i++)
 	{
 		scanf("%d", &k);
+
 		if (k > 0)
 		{
 			box = MakeData(k, used+1);
@@ -308,21 +309,15 @@ void parkingLot()
 					many--;
 					if (size > min_size && size / many >= 3)
 					{
+						printf("%d %d %d\n", size, used, many);
 						int temp = 0;
 						for (int j = 0; j < used; j++)
 						{
-							for (int i = 0; i < used; i++)
-							{
-								if (arr[i] != NULL)
-								{
-									printf("%d %d\n", arr[i]->parkingNo, arr[i]->carNo);
-								}
-							}
-							printf("\n");
 							if (arr[j] != NULL)
 							{
 								arr[temp] = arr[j];
 								arr[temp]->parkingNo = temp+1;
+								if(j > temp)
 								arr[j] = NULL;
 								temp++;
 							}

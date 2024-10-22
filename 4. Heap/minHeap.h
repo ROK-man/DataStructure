@@ -315,6 +315,7 @@ void parkingLot()
 						{
 							if (arr[j] != NULL)
 							{
+								// if(j==temp) continue; 하면 틀림... ?????
 								arr[temp] = arr[j];
 								arr[temp]->parkingNo = temp+1;
 								if(j > temp)
@@ -337,14 +338,6 @@ void parkingLot()
 			}
 
 		}
-		for (int i = 0; i < used; i++)
-		{
-			if (arr[i] != NULL)
-			{
-				printf("%d %d\n", arr[i]->parkingNo, arr[i]->carNo);
-			}
-		}
-		printf("\n");
 	}
 
 	for (int i = 0; i < used; i++)

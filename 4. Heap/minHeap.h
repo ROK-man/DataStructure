@@ -3,11 +3,10 @@
 #include <stdlib.h>
 #include "../DataBox.h"
 
-typedef int element;
-
 typedef struct heapNode
 {
-	element Data;
+	DataBox* Data;
+	int priority;
 }heapNode;
 
 typedef struct minHeap
@@ -47,7 +46,7 @@ void minHeap_SwitchNode(minHeap* heap, int idx1, int idx2)
 	heap->Heap[idx2] = temp;
 }
 
-void minHeap_AddData(minHeap* heap, element data)
+void minHeap_AddData(minHeap* heap, DataBox* data, int priority)
 {
 	if (heap == NULL) return;
 	if (heap->Heap == NULL) return;
@@ -72,12 +71,13 @@ void minHeap_AddData(minHeap* heap, element data)
 	}
 
 	newNode->Data = data;
+	newNode->priority = priority;
 
 	int current_index = heap->UsedSize;
 	heap->Heap[current_index] = newNode;
 	int parent_index = (current_index - 1) / 2;
 
-	while (heap->Heap[parent_index]->Data > heap->Heap[current_index]->Data && parent_index >= 0)
+	while (heap->Heap[parent_index]->priority > heap->Heap[current_index]->priority && parent_index >= 0)
 	{
 		minHeap_SwitchNode(heap, parent_index, current_index);
 
@@ -90,11 +90,11 @@ void minHeap_AddData(minHeap* heap, element data)
 }
 
 
-element minHeap_Pop(minHeap* heap)
+DataBox* minHeap_Pop(minHeap* heap)
 {
-	if (heap == NULL || heap->Heap == NULL || heap->UsedSize <= 0) return -1;
+	if (heap == NULL || heap->Heap == NULL || heap->UsedSize <= 0) return NULL;
 
-	element data = heap->Heap[0]->Data;
+	DataBox* data = heap->Heap[0]->Data;
 
 	free(heap->Heap[0]);
 	heap->Heap[0] = NULL;
@@ -115,7 +115,7 @@ element minHeap_Pop(minHeap* heap)
 	{
 		if (child2 > heap->UsedSize - 1)
 		{
-			if (heap->Heap[child1]->Data < heap->Heap[current]->Data)
+			if (heap->Heap[child1]->priority < heap->Heap[current]->priority)
 			{
 				target_child = child1;
 			}
@@ -126,7 +126,7 @@ element minHeap_Pop(minHeap* heap)
 		}
 		else
 		{
-			if (heap->Heap[child1]->Data < heap->Heap[child2]->Data)
+			if (heap->Heap[child1]->priority < heap->Heap[child2]->priority)
 			{
 				target_child = child1;
 			}
@@ -135,7 +135,7 @@ element minHeap_Pop(minHeap* heap)
 				target_child = child2;
 			}
 
-			if (heap->Heap[target_child]->Data >= heap->Heap[current]->Data)
+			if (heap->Heap[target_child]->priority >= heap->Heap[current]->priority)
 			{
 				break;
 			}
@@ -155,7 +155,7 @@ void minHeap_View(minHeap* heap)
 	if (heap == NULL || heap->Heap == NULL || heap->UsedSize == 0) return;
 	for (int i = 0; i < heap->UsedSize; i++)
 	{
-		printf("%d ", heap->Heap[i]->Data);
+		printf("%d ", heap->Heap[i]->priority);
 	}
 	printf("\n");
 }
@@ -189,25 +189,30 @@ void shrinkHeap(minHeap* heap)
 
 
 // Pop 없이 숫자만 확인
-element minHeap_Peek(minHeap* heap)
+DataBox* minHeap_Peek(minHeap* heap)
 {
-	if (heap == NULL || heap->Heap == NULL || heap->UsedSize == 0) return -1;
+	if (heap == NULL || heap->Heap == NULL || heap->UsedSize == 0) return NULL;
 	return heap->Heap[0]->Data;
 }
+
 
 void minHeap_Sample()
 {
 	printf("최소힙 생성 및 데이터추가\n");
 	minHeap* heap = minHeap_Init();
+	DataBox* data;
 	for (int i = 60; i >0; i-=3)
 	{
-		minHeap_AddData(heap, i);
+		data = MakeData(i);
+		minHeap_AddData(heap, data, data->i);
 	}
 	minHeap_View(heap);
 	printf("데이터 10개 뽑은 뒤 그 10개 데이터 출력\n");
 	for (int i = 0; i < 10; i++)
 	{
-		printf("%d ", minHeap_Pop(heap));
+		data = minHeap_Pop(heap);
+		printf("%d ", data->i);
+		DestroyData(data);
 	}
 	printf("\n");
 	minHeap_Destroy(heap);
@@ -216,7 +221,8 @@ void minHeap_Sample()
 	heap = minHeap_Init();
 	for (int i = 100; i > 0; i -= 6)
 	{
-		minHeap_AddData(heap, i);
+		data = MakeData(i);
+		minHeap_AddData(heap, data, data->i);
 	}
 	minHeap_View(heap);
 }

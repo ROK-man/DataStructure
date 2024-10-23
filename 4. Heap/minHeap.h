@@ -251,7 +251,6 @@ typedef struct {
 	int carNo;
 	int parkingNo;
 }DataBox;
-*/
 void parkingLot()
 {
 	int size;
@@ -349,3 +348,4 @@ void parkingLot()
 	}
 
 }
+*/

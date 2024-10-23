@@ -1,14 +1,15 @@
 // Example header file 
-typedef struct {
+#pragma once
+typedef struct{
 	int carNo;
 	int parkingNo;
+	int i;
 }DataBox;
 
-DataBox* MakeData(int car, int parking)
+DataBox* MakeData(int a)
 {
 	DataBox* newData = (DataBox*)malloc(sizeof(DataBox));
-	newData->carNo = car;
-	newData->parkingNo = parking;
+	newData->i = a;
 
 	return newData;
 }

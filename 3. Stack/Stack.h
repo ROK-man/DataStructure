@@ -37,6 +37,10 @@ void stackAdd(Stack* s, DataBox* data)
 	}
 
 	StackNode* newNode = (StackNode*)malloc(sizeof(StackNode));
+	if (newNode == NULL)
+	{
+		return;
+	}
 	newNode->Data = data;
 	newNode->Next = NULL;
 

@@ -209,7 +209,6 @@ typedef struct {
 	int i;
 }DataBox;일 때 샘플코드
 */
-/*
 void minHeap_Sample()
 {
 	printf("최소힙 생성 및 데이터추가\n");
@@ -240,7 +239,6 @@ void minHeap_Sample()
 	}
 	minHeap_View(heap);
 }
-*/
 
 
 // 주차장 문제

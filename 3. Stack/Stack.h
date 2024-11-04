@@ -105,7 +105,7 @@ void stackDestroy(Stack* s)
 
 void stackSample()
 {
-	printf("큐 생성 후 0부터 9까지 삽입\n");
+	printf("스택 생성 후 0부터 9까지 삽입\n");
 	Stack* s = stackInit();
 	for (int i = 0; i < 10; ++i)
 	{
@@ -132,4 +132,22 @@ void stackSample()
 		stackAdd(s, data);
 	}
 	stackDestroy(s);
+
+	s = stackInit();
+
+	for (int i = 0; i < 300000; ++i)
+	{
+		DataBox* data = MakeData(i);
+		stackAdd(s, data);
+		printf("%d\t", s->Size);
+	}
+
+	for (int i = 0; i < 300000; ++i)
+	{
+		DataBox* data = stackPop(s);
+		printf("%d\t", data->i);
+		free(data);
+	}
+
+
 }

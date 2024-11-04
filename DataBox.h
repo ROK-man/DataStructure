@@ -1,10 +1,10 @@
-// Example header file 
 #pragma once
 typedef struct{
 	int carNo;
 	int parkingNo;
 	int i;
 	char s[10];
+	char* key;
 }DataBox;
 
 DataBox* MakeData(int a)

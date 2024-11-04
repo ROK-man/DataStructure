@@ -1,10 +1,11 @@
 #pragma once
 #include <stdio.h>
 #include <stdlib.h>
+#include "../DataBox.h"
 
 typedef struct SLL_Node 
 {
-	int data;
+	DataBox* Data;
 	SLL_Node* Next;
 }SLL_Node;
 
@@ -23,12 +24,12 @@ SLL* SLL_Init()
 	return list;
 }
 
-void SLL_AddData(SLL* list, int i)
+void SLL_AddData(SLL* list, DataBox* data)
 {
 	SLL_Node* new_node = (SLL_Node*)malloc(sizeof(SLL_Node));
 	if (new_node == NULL) return;
 
-	new_node->data = i;
+	new_node->Data = data;
 	new_node->Next = NULL;
 
 	if (list->Head == NULL)
@@ -47,32 +48,52 @@ void SLL_AddData(SLL* list, int i)
 	return;
 }
 
-void SLL_ViewAllData(SLL* list)
+SLL_Node* SLL_GetStartNode(SLL* list)
 {
-	if (list->Head == NULL)
+	if (list == NULL)
+	{
+		return NULL;
+	}
+
+	return list->Head;
+}
+
+SLL_Node* SLL_NextNode(SLL_Node* node)
+{
+	if (node == NULL)
+	{
+		return NULL;
+	}
+
+	return node->Next;
+}
+
+void SLL_RemoveNode(SLL* list, SLL_Node* node)
+{
+	if (list == NULL || node == NULL)
 	{
 		return;
 	}
 
-	SLL_Node* current_node = list->Head;
-
-	while (current_node != NULL)
+	SLL_Node* currentNode = list->Head;
+	if (currentNode == node)
 	{
-		printf("%d\n", current_node->data);
-		current_node = current_node->Next;
+		free(currentNode);
+		list->Head = NULL;
+		return;
 	}
-	return;
-}
 
-void SLL_Sample()
-{
-	SLL* list = SLL_Init();
-	
-	for (int i = 0; i < 100; i++)
+	while (currentNode)
 	{
-		SLL_AddData(list, i);
+		if (currentNode->Next == node)
+		{
+			SLL_Node* remov = currentNode->Next;
+			currentNode->Next = remov->Next;
+			free(remov);
+			return;
+		}
+		currentNode = currentNode->Next;
 	}
-	SLL_ViewAllData(list);
 
 	return;
 }
